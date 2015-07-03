@@ -1,0 +1,4 @@
+- hosts: libreborme
+- include: step1.yml
+- include: step2.yml
+- include: step3.yml

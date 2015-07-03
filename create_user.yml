@@ -1,0 +1,13 @@
+- hosts: libreborme2
+  vars:
+    - username: libreborme
+  tasks:
+#  - name: Create {{ username }} user
+#    user: name={{ username}} comment="LibreBORME" group=sudo
+
+  - name: Create {{ username }} user
+    command: useradd -m -G sudo -c "LibreBORME" -s /bin/bash {{ username }}
+
+  - name: Install ssh key for {{ username }}
+    authorized_key: user={{ username }} key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+

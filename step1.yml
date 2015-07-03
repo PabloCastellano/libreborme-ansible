@@ -1,0 +1,55 @@
+- hosts: libreborme1
+  vars:
+    - venv_home: /home/libreborme/Env
+
+  tasks:
+
+  - name: install system packages
+    become: true
+    apt: name={{ item }} update_cache=yes state=latest
+    with_items:
+      - mongodb
+      - libxml2-dev
+      - libxslt1-dev
+      - python-dev
+      - zlib1g-dev
+      - python-software-properties
+      - software-properties-common
+      - build-essential
+      - python-setuptools
+      - python-virtualenv
+      - python-dev
+      - nginx-full
+      - nginx-common
+      - openssl
+      - zlib-bin
+      - libjpeg-dev
+      - supervisor
+      - checkinstall
+      - wget
+
+  - name: install python dependencies
+    become: true
+    pip: name={{ item }}
+    with_items:
+      - uwsgi
+      - wheel
+      - setuptools
+
+  - name: removing bugged python dependencies
+    pip: name={{ item }} virtualenv={{ venv_home }} state=absent
+    with_items:
+      - django-mongogeneric
+      - django-mongodbforms
+
+  - name: install python dependencies fixes
+    pip: name={{ item }} virtualenv={{ venv_home }}
+    with_items:
+      - https://github.com/PabloCastellano/django-mongogeneric/tarball/master
+      - https://github.com/PabloCastellano/django-mongodbforms/tarball/master
+      - django-extensions
+
+  - name: install libreborme and dependencies
+    pip: name={{ item }} virtualenv={{ venv_home }}
+    with_items:
+      - https://github.com/PabloCastellano/libreborme/tarball/conf

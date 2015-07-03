@@ -1,0 +1,57 @@
+- hosts: libreborme1
+  vars:
+    - www_dir: /var/www
+    - libreborme_dir: "{{ www_dir }}/libreborme"
+    - project_name: mylibreborme
+    - env_dir: /home/libreborme/Env
+    - hostname: "{{ ansible_fqdn }}"
+  sudo: yes
+
+  tasks:
+
+  - name: Configure supervisor (uwsgi.conf)
+    template: src=templates/uwsgi.conf dest=/etc/supervisor/conf.d/uwsgi.conf
+    notify:
+      - restart supervisor
+
+  - name: Configure supervisor (uwsgi.ini)
+    template: src=templates/uwsgi.ini dest={{ libreborme_dir }}/uwsgi.ini
+    notify:
+      - restart supervisor
+
+  - name: Configure supervisor (celery)
+    template: src=templates/celery.conf dest=/etc/supervisor/conf.d/celery.conf
+    notify:
+      - restart supervisor
+
+  - name: Configure supervisor (celery-beat)
+    template: src=templates/celery-beat.conf dest=/etc/supervisor/conf.d/celery-beat.conf
+    notify:
+      - restart supervisor
+
+# - supervisorctl: name=celery state=started
+# - supervisorctl: name=celery-beat state=started
+# - supervisorctl: name=uwsgi state=started
+
+  - name: create ssl directory
+    file: dest=/etc/nginx/ssl/ state=directory
+
+  - name: create public_html directory
+    file: dest={{ libreborme_dir }}/public_html state=directory owner=libreborme group=www-data
+
+  - name: create self-signed SSL cert
+    command: openssl req -new -nodes -x509 -subj "/C=ES/ST=/L=/O=LibreBORME/CN={{ hostname }}" -days 3650 -keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.crt -extensions v3_ca creates=/etc/nginx/ssl/server.crt
+    notify:
+      - restart nginx
+
+  - name: Configure nginx
+    template: src=templates/nginx.conf dest=/etc/nginx/sites-available/default
+    notify:
+      - restart nginx
+
+  handlers:
+    - name: restart nginx
+      service: name=nginx state=restarted
+
+    - name: restart supervisor
+      service: name=supervisor state=restarted
