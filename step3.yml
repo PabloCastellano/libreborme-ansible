@@ -1,4 +1,4 @@
-- hosts: libreborme1
+- hosts: libreborme
   vars:
     - www_dir: /var/www
     - libreborme_dir: "{{ www_dir }}/libreborme"

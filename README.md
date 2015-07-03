@@ -12,7 +12,7 @@ Documentación aquí: http://libreborme.readthedocs.org/es/latest/TODO
     
 Editar la IP del servidor remoto en el archivo *hosts*. Comprobar que se puede conectar:
 
-    ansible libreborme1 -m ping
+    ansible libreborme -m ping
 
 Resultado:
 

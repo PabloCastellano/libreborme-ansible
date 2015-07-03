@@ -1,4 +1,4 @@
-- hosts: libreborme1
+- hosts: libreborme
   vars:
     - venv_home: /home/libreborme/Env
 
