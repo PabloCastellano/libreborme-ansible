@@ -52,4 +52,4 @@
   - name: install libreborme and dependencies
     pip: name={{ item }} virtualenv={{ venv_home }}
     with_items:
-      - https://github.com/PabloCastellano/libreborme/tarball/conf
+      - https://github.com/PabloCastellano/libreborme/tarball/master

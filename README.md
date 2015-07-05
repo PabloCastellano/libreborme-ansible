@@ -2,7 +2,7 @@
 
 Script para el despliegue automático de Libreborme.
 
-Documentación aquí: http://libreborme.readthedocs.org/es/latest/TODO
+Documentación aquí: http://libreborme.readthedocs.org/es/latest/install_production_automated.
 
 # Cómo ejecutar
 
