@@ -3,7 +3,7 @@
     - www_dir: /var/www
     - libreborme_dir: "{{ www_dir }}/libreborme"
     - project_name: mylibreborme
-    - env_dir: /home/libreborme/Env
+    - venv_home: /home/libreborme/Env
     - hostname: "{{ ansible_fqdn }}"
   sudo: yes
 
