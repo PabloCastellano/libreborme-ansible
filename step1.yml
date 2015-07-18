@@ -1,11 +1,10 @@
-- hosts: libreborme
+- hosts: webservers
   vars:
-    - venv_home: /home/libreborme/Env
+    - venv_home: /home/libreborme/.virtualenvs/libreborme
 
   tasks:
 
   - name: install system packages
-    become: true
     apt: name={{ item }} update_cache=yes state=latest
     with_items:
       - mongodb
@@ -29,7 +28,6 @@
       - wget
 
   - name: install python dependencies
-    become: true
     pip: name={{ item }}
     with_items:
       - uwsgi
@@ -38,12 +36,16 @@
 
   - name: removing bugged python dependencies
     pip: name={{ item }} virtualenv={{ venv_home }} state=absent
+    become: True
+    become_user: libreborme
     with_items:
       - django-mongogeneric
       - django-mongodbforms
 
   - name: install python dependencies fixes
     pip: name={{ item }} virtualenv={{ venv_home }}
+    become: True
+    become_user: libreborme
     with_items:
       - https://github.com/PabloCastellano/django-mongogeneric/tarball/master
       - https://github.com/PabloCastellano/django-mongodbforms/tarball/master
@@ -51,5 +53,9 @@
 
   - name: install libreborme and dependencies
     pip: name={{ item }} virtualenv={{ venv_home }}
+    become: True
+    become_user: libreborme
+    #become_method: su
     with_items:
+      - django-extensions
       - https://github.com/PabloCastellano/libreborme/tarball/master

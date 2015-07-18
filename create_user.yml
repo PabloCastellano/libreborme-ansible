@@ -1,4 +1,4 @@
-- hosts: libreborme2
+- hosts: webservers
   vars:
     - username: libreborme
   tasks:

@@ -1,5 +1,2 @@
-[libreborme_root]
-46.101.190.150 ansible_ssh_user=root
-
-[libreborme]
-46.101.190.150 ansible_ssh_user=libreborme
+[webservers]
+128.199.34.216 ansible_ssh_user=root ansible_ssh_port=11222

@@ -1,4 +1,4 @@
-- hosts: libreborme_root
+- hosts: webservers
 - include: create_user.yml
 - include: step1.yml
 - include: step2.yml

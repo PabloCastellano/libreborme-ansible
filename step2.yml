@@ -1,5 +1,6 @@
-- hosts: libreborme
+- hosts: webservers
   vars: 
+    - venv_home: /home/libreborme/.virtualenvs/libreborme
     - www_dir: /var/www
     - libreborme_dir: "{{ www_dir }}/libreborme"
     - project_name: mylibreborme
@@ -7,15 +8,13 @@
   tasks:
 
   - name: create project folder
-    become: true
     file: dest={{ libreborme_dir }} state=directory owner=libreborme group=www-data mode=0775
 
-  - name: create project folder
+  - name: create project {{ project_name }}
     shell:
-      . /home/libreborme/Env/bin/activate && cd {{ www_dir }} && libreborme startproject {{ project_name }} libreborme creates={{ libreborme_dir }}/manage.py
+      . {{ venv_home }}/bin/activate && cd {{ www_dir }} && libreborme startproject {{ project_name }} libreborme creates={{ libreborme_dir }}/manage.py
 
   - name: set permissions to project folder
-    become: true
     file: dest={{ libreborme_dir }} state=directory owner=libreborme group=www-data recurse=yes
 
   - name: set permissions to folders
@@ -27,6 +26,13 @@
   - name: set permissions to manage.py
     file: dest={{ libreborme_dir }}/manage.py mode=0750
 
+  - name: Configuring piwik I
+    lineinfile: dest={{ libreborme_dir }}/{{ project_name }}/settings.py regexp="^PIWIK_URL" line="PIWIK_URL = 'piwik.libreborme.net/'"
+
+  - name: Configuring piwik II
+    lineinfile: dest={{ libreborme_dir }}/{{ project_name }}/settings.py regexp="^PIWIK_SITE_ID" line="PIWIK_SITE_ID = '1'"
+
   - name: Running sycdb, migrate and collecstatic
+    become_user: libreborme
     shell:
-      . /home/libreborme/Env/bin/activate && cd {{ libreborme_dir }} && ./manage.py syncdb --no-initial-data --noinput && ./manage.py migrate --no-initial-data && ./manage.py collectstatic --noinput
+      . {{ venv_home }}/bin/activate && cd {{ libreborme_dir }} && ./manage.py syncdb --no-initial-data --noinput && ./manage.py migrate --no-initial-data && ./manage.py collectstatic --noinput

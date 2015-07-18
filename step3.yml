@@ -1,9 +1,9 @@
-- hosts: libreborme
+- hosts: webservers
   vars:
     - www_dir: /var/www
     - libreborme_dir: "{{ www_dir }}/libreborme"
     - project_name: mylibreborme
-    - venv_home: /home/libreborme/Env
+    - venv_home: /home/libreborme/.virtualenvs/libreborme
     - hostname: "{{ ansible_fqdn }}"
   sudo: yes
 
@@ -45,9 +45,14 @@
       - restart nginx
 
   - name: Configure nginx
-    template: src=templates/nginx.conf dest=/etc/nginx/sites-available/default
+    template: src=templates/nginx.conf dest=/etc/nginx/sites-available/libreborme
     notify:
       - restart nginx
+
+  - name: Activate the libreborme site
+    file: src=/etc/nginx/sites-available/libreborme
+          dest=/etc/nginx/sites-enabled/libreborme
+          state=link
 
   handlers:
     - name: restart nginx
