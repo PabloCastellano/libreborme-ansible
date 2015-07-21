@@ -19,15 +19,15 @@
     notify:
       - restart supervisor
 
-  - name: Configure supervisor (celery)
-    template: src=templates/celery.conf dest=/etc/supervisor/conf.d/celery.conf
-    notify:
-      - restart supervisor
+#  - name: Configure supervisor (celery)
+#    template: src=templates/celery.conf dest=/etc/supervisor/conf.d/celery.conf
+#    notify:
+#      - restart supervisor
 
-  - name: Configure supervisor (celery-beat)
-    template: src=templates/celery-beat.conf dest=/etc/supervisor/conf.d/celery-beat.conf
-    notify:
-      - restart supervisor
+#  - name: Configure supervisor (celery-beat)
+#    template: src=templates/celery-beat.conf dest=/etc/supervisor/conf.d/celery-beat.conf
+#    notify:
+#      - restart supervisor
 
 # - supervisorctl: name=celery state=started
 # - supervisorctl: name=celery-beat state=started
@@ -53,6 +53,10 @@
     file: src=/etc/nginx/sites-available/libreborme
           dest=/etc/nginx/sites-enabled/libreborme
           state=link
+
+# TODO: mongodb fixture inicial: version y last_modified
+# mongo libreborme
+# db.config.insert({last_modified: "2015-01-01"})
 
   handlers:
     - name: restart nginx

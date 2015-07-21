@@ -32,6 +32,9 @@
   - name: Configuring piwik II
     lineinfile: dest={{ libreborme_dir }}/{{ project_name }}/settings.py regexp="^PIWIK_SITE_ID" line="PIWIK_SITE_ID = '1'"
 
+  - name: Disabling DEBUG mode
+    lineinfile: dest={{ libreborme_dir }}/{{ project_name }}/settings.py regexp="^DEBUG" line="DEBUG = False"
+
   - name: Running sycdb, migrate and collecstatic
     become_user: libreborme
     shell:
