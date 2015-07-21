@@ -26,7 +26,7 @@
       - python3-setuptools
       - nginx-full
       - nginx-common
-#      - uwsgi-plugin-python3
+      - uwsgi-plugin-python3
       - openssl
       - supervisor
       - checkinstall
@@ -34,19 +34,12 @@
       - wget
       - git
 
-  - name: install python dependencies
-    pip: name={{ item }} state=latest executable=pip3
-    with_items:
-      - uwsgi
-#      - wheel
-#      - setuptools
-
   - name: Setup a virtual environment using Python 3
-    #shell: virtualenv -p /usr/bin/python3 {{ venv_home }}
     shell: pyvenv {{ venv_home }}
     become: True
     become_user: libreborme
 
+    # Temporal:
   - name: install python dependencies fixes
     pip: name={{ item }} virtualenv={{ venv_home }} state=latest
     become: True
