@@ -3,14 +3,13 @@
 - hosts: webservers
   vars:
     swap_file_path: /swapfile
-    swap_file_size_kb: 4194304  # 4GB
+    swap_file_size_gb: 4
 
   tasks:
 
 
   - name: Create swap file
-    #command: fallocate -l 4G {{ swapfile }} creates="{{ swapfile }}"
-    command: dd if=/dev/zero of={{ swap_file_path }} bs=1024 count={{ swap_file_size_kb }}k
+    command: fallocate -l {{ swap_file_size_gb }}G {{ swap_file_path }}
              creates="{{ swap_file_path }}"
     tags:
       - swap.file.create
