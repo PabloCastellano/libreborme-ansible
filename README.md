@@ -36,3 +36,7 @@ Ejecuta el playbook:
 En aproximadamente 7 minutos está todo funcionando. 
 
 TODO: Importar backup
+
+Actualizar a la última versión de libreborme:
+
+    ansible-playbook update.yml
