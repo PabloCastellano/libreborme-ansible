@@ -2,6 +2,7 @@
   vars: 
     - venv_home: /home/libreborme/.virtualenvs/libreborme
     - www_dir: /var/www
+    - lb_home: /home/libreborme/libreborme/
     - libreborme_dir: "{{ www_dir }}/libreborme"
     - project_name: mylibreborme
 
@@ -34,6 +35,14 @@
 
   - name: Disabling DEBUG mode
     lineinfile: dest={{ libreborme_dir }}/{{ project_name }}/settings.py regexp="^DEBUG" line="DEBUG = False"
+
+  - name: Adding initial data to MongoDB
+    command: 'mongo libreborme --eval "db.config.insert({last_modified: ''1970-01-01''})"'
+
+  - name: Update libreborme version data
+    shell: . {{ venv_home }}/bin/activate && /var/www/libreborme/manage.py updateversion chdir={{ lb_home }}
+    become: True
+    become_user: libreborme
 
   - name: Running sycdb, migrate and collecstatic
     become_user: libreborme
