@@ -1,0 +1,32 @@
+- hosts: webservers
+  vars:
+    lb_local_dir: ~/src/libreborme/
+    lb_home: /home/libreborme/libreborme/
+    venv_home: /home/libreborme/.virtualenvs/libreborme/
+    project_dir: /var/www/libreborme/mylibreborme
+
+  tasks:
+
+  - name: Sync libreborme repository
+    synchronize: src={{ lb_local_dir }} dest={{ lb_home }} rsync_opts=--no-motd,--exclude=.git
+    become: True
+    become_user: libreborme
+    notify:
+      - Restart uwsgi
+
+    # Plantilla
+    # TODO: Faltan variables
+#  - name: Sync libreborme template
+#    synchronize: src={{ lb_local_dir }}/libreborme/conf/project_template/project_name/ dest={{ project_dir }}
+#    become: True
+#    become_user: libreborme
+#    notify:
+#      - Restart uwsgi
+
+  handlers:
+    - name: Restart uwsgi
+      supervisorctl: name=uwsgi state=restarted
+
+  #- name: Nginx service reload
+  #  service: name=nginx state=reloaded
+
