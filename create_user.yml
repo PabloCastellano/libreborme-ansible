@@ -5,6 +5,7 @@
 #  - name: Create {{ username }} user
 #    user: name={{ username}} comment="LibreBORME" group=sudo
 
+    # TODO: Idempotencia. http://docs.ansible.com/ansible/user_module.html
   - name: Create {{ username }} user
     command: useradd -m -G sudo -c "LibreBORME" -s /bin/bash {{ username }}
 
