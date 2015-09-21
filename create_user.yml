@@ -1,6 +1,8 @@
 - hosts: webservers
   vars:
     - username: libreborme
+  become: true
+
   tasks:
 #  - name: Create {{ username }} user
 #    user: name={{ username}} comment="LibreBORME" group=sudo

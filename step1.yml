@@ -5,6 +5,7 @@
     repository_bp: https://github.com/PabloCastellano/bormeparser.git
     lb_home: /home/libreborme/libreborme/
     bp_home: /home/libreborme/bormeparser/
+  become: True
 
   tasks:
 
@@ -36,13 +37,11 @@
 
   - name: Setup a virtual environment using Python 3
     shell: pyvenv {{ venv_home }}
-    become: True
     become_user: libreborme
 
     # Temporal:
   - name: install python dependencies fixes
     pip: name={{ item }} virtualenv={{ venv_home }} state=latest
-    become: True
     become_user: libreborme
     with_items:
       - https://github.com/PabloCastellano/django-mongogeneric/tarball/master
@@ -50,7 +49,6 @@
 
   - name: install libreborme and dependencies
     pip: name={{ item }} virtualenv={{ venv_home }} state=latest
-    become: True
     become_user: libreborme
     with_items:
       - django-extensions
@@ -58,30 +56,24 @@
 
   - name: Clone libreborme
     git: repo={{ repository }} dest={{ lb_home }}
-    become: True
     become_user: libreborme
 
   - name: Clone bormeparser
     git: repo={{ repository_bp }} dest={{ bp_home }}
-    become: True
     become_user: libreborme
 
   - name: Install libreborme requirements
     pip: requirements={{ lb_home }}requirements/base.txt virtualenv={{ venv_home }} executable=pip3
-    become: True
     become_user: libreborme
 
   - name: Install bormeparser requirements
     pip: requirements={{ bp_home }}requirements/python3.txt virtualenv={{ venv_home }} executable=pip3
-    become: True
     become_user: libreborme
 
   - name: Install libreborme (setup.py develop)
     shell: . {{ venv_home }}/bin/activate && cd {{ lb_home }} && python setup.py develop
-    become: True
     become_user: libreborme
 
   - name: Install bormeparser (setup.py develop)
     shell: . {{ venv_home }}/bin/activate && cd {{ bp_home }} && python setup.py develop
-    become: True
     become_user: libreborme

@@ -5,7 +5,7 @@
     - project_name: mylibreborme
     - venv_home: /home/libreborme/.virtualenvs/libreborme
     - hostname: "{{ ansible_fqdn }}"
-  sudo: yes
+  become: True
 
   tasks:
 

@@ -5,6 +5,7 @@
     - lb_home: /home/libreborme/libreborme/
     - libreborme_dir: "{{ www_dir }}/libreborme"
     - project_name: mylibreborme
+  become: True
 
   tasks:
 
@@ -41,7 +42,6 @@
 
   - name: Update libreborme version data
     shell: . {{ venv_home }}/bin/activate && /var/www/libreborme/manage.py updateversion chdir={{ lb_home }}
-    become: True
     become_user: libreborme
 
   - name: Running sycdb, migrate and collecstatic
