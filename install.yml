@@ -4,3 +4,4 @@
 - include: step1.yml
 - include: step2.yml
 - include: step3.yml
+- include: update_version.yml
