@@ -20,7 +20,7 @@ Instala la versión más reciente de ansible desde el repositorio PPA:
     
 Editar la IP del servidor remoto en el archivo *hosts*. Comprobar que se puede conectar:
 
-    ansible libreborme -m ping
+    ansible webservers -m ping
 
 Resultado:
 
@@ -33,7 +33,7 @@ Ejecuta el playbook:
 
     ansible-playbook install.yml
 
-En aproximadamente 7 minutos está todo funcionando. 
+En aproximadamente 5 minutos está todo funcionando.
 
 TODO: Importar backup
 
