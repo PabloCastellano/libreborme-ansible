@@ -2,10 +2,12 @@
   vars:
     lb_home: /home/libreborme/libreborme/
     venv_home: /home/libreborme/.virtualenvs/libreborme/
+    www_dir: /var/www
+    libreborme_dir: "{{ www_dir }}/libreborme"
 
   tasks:
 
   - name: Update libreborme version data
-    shell: . {{ venv_home }}/bin/activate && /var/www/libreborme/manage.py updateversion chdir={{ lb_home }}
+    shell: . {{ venv_home }}/bin/activate && {{ libreborme_dir }}/manage.py updateversion chdir={{ lb_home }}
     become: True
     become_user: libreborme

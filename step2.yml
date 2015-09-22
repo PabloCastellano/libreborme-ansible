@@ -41,7 +41,7 @@
     command: 'mongo libreborme --eval "db.config.insert({last_modified: ''1970-01-01''})"'
 
   - name: Update libreborme version data
-    shell: . {{ venv_home }}/bin/activate && /var/www/libreborme/manage.py updateversion chdir={{ lb_home }}
+    shell: . {{ venv_home }}/bin/activate && {{ libreborme_dir }}/manage.py updateversion chdir={{ lb_home }}
     become_user: libreborme
 
   - name: Running sycdb, migrate and collecstatic
