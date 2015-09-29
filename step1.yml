@@ -34,6 +34,7 @@
       - virtualenv
       - wget
       - git
+      - postfix
 
   - name: Setup a virtual environment using Python 3
     shell: pyvenv {{ venv_home }}
@@ -77,3 +78,6 @@
   - name: Install bormeparser (setup.py develop)
     shell: . {{ venv_home }}/bin/activate && cd {{ bp_home }} && python setup.py develop
     become_user: libreborme
+
+# TODO:
+# sudo chown libreborme:libreborme bormeparser libreborme -R
