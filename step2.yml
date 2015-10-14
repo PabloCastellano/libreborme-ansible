@@ -1,8 +1,8 @@
 - hosts: webservers
   vars: 
-    - venv_home: /home/libreborme/.virtualenvs/libreborme
+    - venv_home: /home/vagrant/.virtualenvs/libreborme
     - www_dir: /var/www
-    - lb_home: /home/libreborme/libreborme/
+    - lb_home: /home/vagrant/libreborme/
     - libreborme_dir: "{{ www_dir }}/libreborme"
     - project_name: mylibreborme
   become: True
@@ -10,14 +10,14 @@
   tasks:
 
   - name: create project folder
-    file: dest={{ libreborme_dir }} state=directory owner=libreborme group=www-data mode=0775
+    file: dest={{ libreborme_dir }} state=directory owner=vagrant group=www-data mode=0775
 
   - name: create project {{ project_name }}
     shell:
       . {{ venv_home }}/bin/activate && cd {{ www_dir }} && libreborme startproject {{ project_name }} libreborme creates={{ libreborme_dir }}/manage.py
 
   - name: set permissions to project folder
-    file: dest={{ libreborme_dir }} state=directory owner=libreborme group=www-data recurse=yes
+    file: dest={{ libreborme_dir }} state=directory owner=vagrant group=www-data recurse=yes
 
   - name: set permissions to folders
     file: dest={{ libreborme_dir }}/{{item}} mode=0775
@@ -51,18 +51,15 @@
 
   - name: Running django migrate
     django_manage: command="migrate --no-initial-data" virtualenv={{ venv_home }} app_path={{ libreborme_dir }}
-    become_user: libreborme
 
   - name: Running django collectstatic
     django_manage: command="collectstatic --noinput" virtualenv={{ venv_home }} app_path={{ libreborme_dir }}
-    become_user: libreborme
 
   - name: Update libreborme version data
     django_manage: command="updateversion" virtualenv={{ venv_home }} app_path={{ libreborme_dir }}
-    become_user: libreborme
 
   - name: Configuring bashrc I
-    lineinfile: dest=/home/libreborme/.bashrc line=". ~/.virtualenvs/libreborme/bin/activate"
+    lineinfile: dest=/home/vagrant/.bashrc line=". ~/.virtualenvs/libreborme/bin/activate"
 
   - name: Configuring bashrc II
-    lineinfile: dest=/home/libreborme/.bashrc line="cd {{ libreborme_dir }}"
+    lineinfile: dest=/home/vagrant/.bashrc line="cd {{ libreborme_dir }}"

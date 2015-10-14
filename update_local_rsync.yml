@@ -2,31 +2,26 @@
   vars:
     lb_local_dir: ~/src/libreborme/
     bp_local_dir: ~/src/bormeparser/
-    lb_home: /home/libreborme/libreborme/
-    bp_home: /home/libreborme/bormeparser/
-    venv_home: /home/libreborme/.virtualenvs/libreborme/
+    lb_home: /home/vagrant/libreborme/
+    bp_home: /home/vagrant/bormeparser/
+    venv_home: /home/vagrant/.virtualenvs/libreborme/
     project_dir: /var/www/libreborme/mylibreborme
+  become: True
 
   tasks:
 
   - name: Sync libreborme repository
     synchronize: src={{ lb_local_dir }} dest={{ lb_home }} rsync_opts=--no-motd,--exclude=.git
-    become: True
-    become_user: libreborme
     notify:
       - Restart uwsgi
 
   - name: Sync bormeparser repository
     synchronize: src={{ bp_local_dir }} dest={{ bp_home }} rsync_opts=--no-motd,--exclude=.git
-    become: True
-    become_user: libreborme
 
     # Plantilla
     # TODO: Faltan variables
 #  - name: Sync libreborme template
 #    synchronize: src={{ lb_local_dir }}/libreborme/conf/project_template/project_name/ dest={{ project_dir }}
-#    become: True
-#    become_user: libreborme
 #    notify:
 #      - Restart uwsgi
 

@@ -1,12 +1,12 @@
 - hosts: webservers
   vars:
-    lb_home: /home/libreborme/libreborme/
-    venv_home: /home/libreborme/.virtualenvs/libreborme/
+    lb_home: /home/vagrant/libreborme/
+    venv_home: /home/vagrant/.virtualenvs/libreborme/
     www_dir: /var/www
     libreborme_dir: "{{ www_dir }}/libreborme"
+  become: True
 
   tasks:
 
   - name: Update libreborme version data
     django_manage: command="updateversion" virtualenv={{ venv_home }} app_path={{ libreborme_dir }}
-    become_user: libreborme

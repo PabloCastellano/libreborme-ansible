@@ -1,16 +1,16 @@
 - hosts: webservers
   vars:
-    venv_home: /home/libreborme/.virtualenvs/libreborme
+    venv_home: /home/vagrant/.virtualenvs/libreborme
     repository: https://github.com/PabloCastellano/libreborme.git
     repository_bp: https://github.com/PabloCastellano/bormeparser.git
-    lb_home: /home/libreborme/libreborme/
-    bp_home: /home/libreborme/bormeparser/
-  become: True
+    lb_home: /home/vagrant/libreborme/
+    bp_home: /home/vagrant/bormeparser/
 
   tasks:
 
   - name: install system packages
     apt: name={{ item }} update_cache=yes state=latest
+    become: True
     with_items:
       - libxml2-dev
       - libxslt1-dev
@@ -39,16 +39,18 @@
       - postgresql-contrib
       - python-psycopg2
       - openjdk-7-jre
+      - language-pack-es
 
   # La version de los repositorios es muy antigua
   - name: Download elasticsearch
-    get_url: url=https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.3.deb dest=/root/
+    get_url: url=https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.3.deb dest=/home/vagrant/
 # ansible 2.0:
-#    get_url: url=https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.3.deb dest=/root/ checksum=sha1:6335601147c0bbbdcd780cade8e2b3040a0795bb
+#    get_url: url=https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.3.deb dest=/home/vagrant/ checksum=sha1:6335601147c0bbbdcd780cade8e2b3040a0795bb
 
   - name: Install elasticsearch
-    apt: deb=/root/elasticsearch-1.7.3.deb
+    apt: deb=/home/vagrant/elasticsearch-1.7.3.deb
     notify: restart elasticsearch
+    become: True
 
   - name: Generate es_ES.UTF-8 locale
     locale_gen: name=es_ES.UTF-8 state=present
@@ -57,45 +59,39 @@
     copy: content='Europe/Madrid' dest=/etc/timezone owner=root group=root mode=0644 backup=yes
     notify:
       - update timezone
+    become: True
 
   - name: Setup a virtual environment using Python 3
     shell: pyvenv {{ venv_home }}
-    become_user: libreborme
 
   - name: install libreborme and dependencies
     pip: name={{ item }} virtualenv={{ venv_home }} state=latest
-    become_user: libreborme
     with_items:
       - django-extensions
     #  - https://github.com/PabloCastellano/libreborme/tarball/master
 
-  - name: Clone libreborme
-    git: repo={{ repository }} dest={{ lb_home }} version=develop
-    become_user: libreborme
+#  - name: Clone libreborme
+#    git: repo={{ repository }} dest={{ lb_home }}
 
-  - name: Clone bormeparser
-    git: repo={{ repository_bp }} dest={{ bp_home }}
-    become_user: libreborme
+#  - name: Clone bormeparser
+#    git: repo={{ repository_bp }} dest={{ bp_home }}
 
   - name: Install libreborme requirements
     pip: requirements={{ lb_home }}requirements/base.txt virtualenv={{ venv_home }} executable=pip3
-    become_user: libreborme
 
   - name: Install bormeparser requirements
     pip: requirements={{ bp_home }}requirements/python3.txt virtualenv={{ venv_home }} executable=pip3
-    become_user: libreborme
 
   - name: Install libreborme (setup.py develop)
     shell: . {{ venv_home }}/bin/activate && cd {{ lb_home }} && python setup.py develop
-    become_user: libreborme
 
   - name: Install bormeparser (setup.py develop)
     shell: . {{ venv_home }}/bin/activate && cd {{ bp_home }} && python setup.py develop
-    become_user: libreborme
 
   handlers:
     - name: update timezone
       command: dpkg-reconfigure --frontend noninteractive tzdata
+      become: True
 
     - name: restart elasticsearch
       service: name=elasticsearch state=restarted

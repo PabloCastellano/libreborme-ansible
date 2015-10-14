@@ -1,2 +1,2 @@
 [webservers]
-128.199.34.216 ansible_ssh_user=root ansible_ssh_port=11222
+192.168.33.10 ansible_ssh_user=vagrant ansible_ssh_port=22

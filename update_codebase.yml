@@ -2,32 +2,25 @@
   vars:
     repository: https://github.com/PabloCastellano/libreborme.git
     repository_bp: https://github.com/PabloCastellano/bormeparser.git
-    lb_home: /home/libreborme/libreborme/
-    bp_home: /home/libreborme/bormeparser/
-    venv_home: /home/libreborme/.virtualenvs/libreborme/
+    lb_home: /home/vagrant/libreborme/
+    bp_home: /home/vagrant/bormeparser/
+    venv_home: /home/vagrant/.virtualenvs/libreborme/
     branch: develop
+  become: True
 
   tasks:
 
   - name: Update libreborme repository
     git: repo={{ repository }} dest={{ lb_home }} version={{ branch }}
-    become: True
-    become_user: libreborme
 
   - name: Update bormeparser repository
     git: repo={{ repository_bp }} dest={{ bp_home }}
-    become: True
-    become_user: libreborme
 
   - name: Update libreborme requirements
     pip: requirements={{ lb_home }}requirements/base.txt virtualenv={{ venv_home }}
-    become: True
-    become_user: libreborme
 
   - name: Update bormeparser requirements
     pip: requirements={{ bp_home }}requirements/python3.txt virtualenv={{ venv_home }}
-    become: True
-    become_user: libreborme
 
   # TODO: migrations?
 
