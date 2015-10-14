@@ -54,10 +54,6 @@
           dest=/etc/nginx/sites-enabled/libreborme
           state=link
 
-# TODO: mongodb fixture inicial: version y last_modified
-# mongo libreborme
-# db.config.insert({last_modified: "2015-01-01"})
-
   handlers:
     - name: restart nginx
       service: name=nginx state=restarted
