@@ -41,6 +41,7 @@ Vagrant.configure(2) do |config|
   # config.vm.synced_folder "../data", "/vagrant_data"
   config.vm.synced_folder "/home/pablo/src/libreborme", "/home/libreborme/libreborme", owner: "libreborme", group: "libreborme"
   config.vm.synced_folder "/home/pablo/src/bormeparser", "/home/libreborme/bormeparser", owner: "libreborme", group: "libreborme"
+  config.vm.synced_folder "/media/pablo/home2/pablo/bormes", "/home/libreborme/.bormes", owner: "libreborme", group: "libreborme"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
