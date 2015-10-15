@@ -36,6 +36,9 @@
       - git
       - postfix
 
+  - name: Generate es_ES.UTF-8 locale
+    locale_gen: name=es_ES.UTF-8 state=present
+
   - name: Setup a virtual environment using Python 3
     shell: pyvenv {{ venv_home }}
     become_user: libreborme
