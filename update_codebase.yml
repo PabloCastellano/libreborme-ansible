@@ -9,7 +9,7 @@
   tasks:
 
   - name: Update libreborme repository
-    git: repo={{ repository }} dest={{ lb_home }}
+    git: repo={{ repository }} dest={{ lb_home }} version=develop
     become: True
     become_user: libreborme
 

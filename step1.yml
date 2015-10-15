@@ -51,7 +51,7 @@
     #  - https://github.com/PabloCastellano/libreborme/tarball/master
 
   - name: Clone libreborme
-    git: repo={{ repository }} dest={{ lb_home }}
+    git: repo={{ repository }} dest={{ lb_home }} version=develop
     become_user: libreborme
 
   - name: Clone bormeparser
