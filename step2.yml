@@ -1,8 +1,8 @@
 - hosts: webservers
   vars: 
-    - venv_home: /home/libreborme/.virtualenvs/libreborme
+    - venv_home: /home/vagrant/.virtualenvs/libreborme
     - www_dir: /var/www
-    - lb_home: /home/libreborme/libreborme/
+    - lb_home: /home/vagrant/libreborme/
     - libreborme_dir: "{{ www_dir }}/libreborme"
     - project_name: mylibreborme
   become: True
@@ -10,14 +10,14 @@
   tasks:
 
   - name: create project folder
-    file: dest={{ libreborme_dir }} state=directory owner=libreborme group=www-data mode=0775
+    file: dest={{ libreborme_dir }} state=directory owner=vagrant group=www-data mode=0775
 
   - name: create project {{ project_name }}
     shell:
       . {{ venv_home }}/bin/activate && cd {{ www_dir }} && libreborme startproject {{ project_name }} libreborme creates={{ libreborme_dir }}/manage.py
 
   - name: set permissions to project folder
-    file: dest={{ libreborme_dir }} state=directory owner=libreborme group=www-data recurse=yes
+    file: dest={{ libreborme_dir }} state=directory owner=vagrant group=www-data recurse=yes
 
   - name: set permissions to folders
     file: dest={{ libreborme_dir }}/{{item}} mode=0775
@@ -42,9 +42,7 @@
 
   - name: Update libreborme version data
     shell: . {{ venv_home }}/bin/activate && {{ libreborme_dir }}/manage.py updateversion chdir={{ lb_home }}
-    become_user: libreborme
 
   - name: Running sycdb, migrate and collecstatic
-    become_user: libreborme
     shell:
       . {{ venv_home }}/bin/activate && cd {{ libreborme_dir }} && ./manage.py syncdb --no-initial-data --noinput && ./manage.py migrate --no-initial-data && ./manage.py collectstatic --noinput

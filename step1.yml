@@ -1,16 +1,16 @@
 - hosts: webservers
   vars:
-    venv_home: /home/libreborme/.virtualenvs/libreborme
+    venv_home: /home/vagrant/.virtualenvs/libreborme
     repository: https://github.com/PabloCastellano/libreborme.git
     repository_bp: https://github.com/PabloCastellano/bormeparser.git
-    lb_home: /home/libreborme/libreborme/
-    bp_home: /home/libreborme/bormeparser/
-  become: True
+    lb_home: /home/vagrant/libreborme/
+    bp_home: /home/vagrant/bormeparser/
 
   tasks:
 
   - name: install system packages
     apt: name={{ item }} update_cache=yes state=latest
+    become: True
     with_items:
       - mongodb
       - libxml2-dev
@@ -41,46 +41,37 @@
 
   - name: Setup a virtual environment using Python 3
     shell: pyvenv {{ venv_home }}
-    become_user: libreborme
 
     # Temporal:
   - name: install python dependencies fixes
     pip: name={{ item }} virtualenv={{ venv_home }} state=latest
-    become_user: libreborme
     with_items:
       - https://github.com/PabloCastellano/django-mongogeneric/tarball/master
       - https://github.com/PabloCastellano/django-mongodbforms/tarball/master
 
   - name: install libreborme and dependencies
     pip: name={{ item }} virtualenv={{ venv_home }} state=latest
-    become_user: libreborme
     with_items:
       - django-extensions
     #  - https://github.com/PabloCastellano/libreborme/tarball/master
 
   - name: Clone libreborme
     git: repo={{ repository }} dest={{ lb_home }}
-    become_user: libreborme
 
   - name: Clone bormeparser
     git: repo={{ repository_bp }} dest={{ bp_home }}
-    become_user: libreborme
 
   - name: Install libreborme requirements
     pip: requirements={{ lb_home }}requirements/base.txt virtualenv={{ venv_home }} executable=pip3
-    become_user: libreborme
 
   - name: Install bormeparser requirements
     pip: requirements={{ bp_home }}requirements/python3.txt virtualenv={{ venv_home }} executable=pip3
-    become_user: libreborme
 
   - name: Install libreborme (setup.py develop)
     shell: . {{ venv_home }}/bin/activate && cd {{ lb_home }} && python setup.py develop
-    become_user: libreborme
 
   - name: Install bormeparser (setup.py develop)
     shell: . {{ venv_home }}/bin/activate && cd {{ bp_home }} && python setup.py develop
-    become_user: libreborme
 
 # TODO:
 # sudo chown libreborme:libreborme bormeparser libreborme -R

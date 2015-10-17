@@ -9,5 +9,3 @@
 
   - name: Update libreborme version data
     shell: . {{ venv_home }}/bin/activate && {{ libreborme_dir }}/manage.py updateversion chdir={{ lb_home }}
-    become: True
-    become_user: libreborme

@@ -3,7 +3,7 @@
     - www_dir: /var/www
     - libreborme_dir: "{{ www_dir }}/libreborme"
     - project_name: mylibreborme
-    - venv_home: /home/libreborme/.virtualenvs/libreborme
+    - venv_home: /home/vagrant/.virtualenvs/libreborme
     - hostname: "{{ ansible_fqdn }}"
   become: True
 
@@ -37,7 +37,7 @@
     file: dest=/etc/nginx/ssl/ state=directory
 
   - name: create public_html directory
-    file: dest={{ libreborme_dir }}/public_html state=directory owner=libreborme group=www-data
+    file: dest={{ libreborme_dir }}/public_html state=directory owner=vagrant group=www-data
 
   - name: create self-signed SSL cert
     command: openssl req -new -nodes -x509 -subj "/C=ES/ST=/L=/O=LibreBORME/CN={{ hostname }}" -days 3650 -keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.crt -extensions v3_ca creates=/etc/nginx/ssl/server.crt

@@ -39,9 +39,9 @@ Vagrant.configure(2) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
-  config.vm.synced_folder "/home/pablo/src/libreborme", "/home/libreborme/libreborme", owner: "libreborme", group: "libreborme"
-  config.vm.synced_folder "/home/pablo/src/bormeparser", "/home/libreborme/bormeparser", owner: "libreborme", group: "libreborme"
-  config.vm.synced_folder "/media/pablo/home2/pablo/bormes", "/home/libreborme/.bormes", owner: "libreborme", group: "libreborme"
+  config.vm.synced_folder "/home/pablo/src/libreborme", "/home/vagrant/libreborme"
+  config.vm.synced_folder "/home/pablo/src/bormeparser", "/home/vagrant/bormeparser"
+  config.vm.synced_folder "/media/pablo/home2/pablo/bormes", "/home/vagrant/.bormes"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.

@@ -12,13 +12,11 @@
 
   - name: Sync libreborme repository
     synchronize: src={{ lb_local_dir }} dest={{ lb_home }} rsync_opts=--no-motd,--exclude=.git
-    become_user: libreborme
     notify:
       - Restart uwsgi
 
   - name: Sync bormeparser repository
     synchronize: src={{ bp_local_dir }} dest={{ bp_home }} rsync_opts=--no-motd,--exclude=.git
-    become_user: libreborme
 
     # Plantilla
     # TODO: Faltan variables
