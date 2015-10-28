@@ -5,11 +5,12 @@
     lb_home: /home/libreborme/libreborme/
     bp_home: /home/libreborme/bormeparser/
     venv_home: /home/libreborme/.virtualenvs/libreborme/
+    branch: develop
 
   tasks:
 
   - name: Update libreborme repository
-    git: repo={{ repository }} dest={{ lb_home }} version=develop
+    git: repo={{ repository }} dest={{ lb_home }} version={{ branch }}
     become: True
     become_user: libreborme
 
