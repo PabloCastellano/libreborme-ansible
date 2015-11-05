@@ -58,3 +58,8 @@
     shell: . {{ venv_home }}/bin/activate && {{ libreborme_dir }}/manage.py updateversion chdir={{ lb_home }}
     become_user: libreborme
 
+  - name: Configuring bashrc I
+    lineinfile: dest=/home/libreborme/.bashrc line=". ~/.virtualenvs/libreborme/bin/activate"
+
+  - name: Configuring bashrc II
+    lineinfile: dest=/home/libreborme/.bashrc line="cd {{ libreborme_dir }}"
