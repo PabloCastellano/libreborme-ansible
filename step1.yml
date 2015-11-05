@@ -38,6 +38,17 @@
       - postgresql
       - postgresql-contrib
       - python-psycopg2
+      - openjdk-7-jre
+
+  # La version de los repositorios es muy antigua
+  - name: Download elasticsearch
+    get_url: url=https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.3.deb dest=/root/
+# ansible 2.0:
+#    get_url: url=https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.3.deb dest=/root/ checksum=sha1:6335601147c0bbbdcd780cade8e2b3040a0795bb
+
+  - name: Install elasticsearch
+    apt: deb=/root/elasticsearch-1.7.3.deb
+    notify: restart elasticsearch
 
   - name: Generate es_ES.UTF-8 locale
     locale_gen: name=es_ES.UTF-8 state=present
@@ -85,6 +96,9 @@
   handlers:
     - name: update timezone
       command: dpkg-reconfigure --frontend noninteractive tzdata
+
+    - name: restart elasticsearch
+      service: name=elasticsearch state=restarted
 
 # TODO:
 # sudo chown libreborme:libreborme bormeparser libreborme -R
