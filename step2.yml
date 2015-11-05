@@ -49,10 +49,10 @@
     postgresql_ext: name=hstore db=libreborme
     become_user: postgres
 
-  - name: Running sycdb, migrate and collecstatic
-    become_user: libreborme
+  - name: Running migrate and collectstatic
     shell:
-      . {{ venv_home }}/bin/activate && cd {{ libreborme_dir }} && ./manage.py syncdb --no-initial-data --noinput && ./manage.py migrate --no-initial-data && ./manage.py collectstatic --noinput
+      . {{ venv_home }}/bin/activate && cd {{ libreborme_dir }} && ./manage.py migrate --no-initial-data && ./manage.py collectstatic --noinput
+    become_user: libreborme
 
   - name: Update libreborme version data
     shell: . {{ venv_home }}/bin/activate && {{ libreborme_dir }}/manage.py updateversion chdir={{ lb_home }}
