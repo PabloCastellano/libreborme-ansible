@@ -42,6 +42,11 @@
   - name: Generate es_ES.UTF-8 locale
     locale_gen: name=es_ES.UTF-8 state=present
 
+  - name: Set timezone variables
+    copy: content='Europe/Madrid' dest=/etc/timezone owner=root group=root mode=0644 backup=yes
+    notify:
+      - update timezone
+
   - name: Setup a virtual environment using Python 3
     shell: pyvenv {{ venv_home }}
     become_user: libreborme
@@ -76,6 +81,10 @@
   - name: Install bormeparser (setup.py develop)
     shell: . {{ venv_home }}/bin/activate && cd {{ bp_home }} && python setup.py develop
     become_user: libreborme
+
+  handlers:
+    - name: update timezone
+      command: dpkg-reconfigure --frontend noninteractive tzdata
 
 # TODO:
 # sudo chown libreborme:libreborme bormeparser libreborme -R
