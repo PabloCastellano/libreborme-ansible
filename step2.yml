@@ -49,13 +49,16 @@
     postgresql_ext: name=hstore db=libreborme
     become_user: postgres
 
-  - name: Running migrate and collectstatic
-    shell:
-      . {{ venv_home }}/bin/activate && cd {{ libreborme_dir }} && ./manage.py migrate --no-initial-data && ./manage.py collectstatic --noinput
+  - name: Running django migrate
+    django_manage: command="migrate --no-initial-data" virtualenv={{ venv_home }} app_path={{ libreborme_dir }}
+    become_user: libreborme
+
+  - name: Running django collectstatic
+    django_manage: command="collectstatic --noinput" virtualenv={{ venv_home }} app_path={{ libreborme_dir }}
     become_user: libreborme
 
   - name: Update libreborme version data
-    shell: . {{ venv_home }}/bin/activate && {{ libreborme_dir }}/manage.py updateversion chdir={{ lb_home }}
+    django_manage: command="updateversion" virtualenv={{ venv_home }} app_path={{ libreborme_dir }}
     become_user: libreborme
 
   - name: Configuring bashrc I

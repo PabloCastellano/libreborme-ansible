@@ -8,6 +8,5 @@
   tasks:
 
   - name: Update libreborme version data
-    shell: . {{ venv_home }}/bin/activate && {{ libreborme_dir }}/manage.py updateversion chdir={{ lb_home }}
-    become: True
+    django_manage: command="updateversion" virtualenv={{ venv_home }} app_path={{ libreborme_dir }}
     become_user: libreborme

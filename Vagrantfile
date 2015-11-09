@@ -80,6 +80,7 @@ Vagrant.configure(2) do |config|
 #    ansible.sudo = true
 #    ansible.sudo_user = "libreborme"
 #    ansible.ask_sudo_pass = true
+    ansible.inventory_path = "hosts"
     ansible.verbose = "vvvv"
   end
 end
