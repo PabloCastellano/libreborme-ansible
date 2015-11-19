@@ -54,6 +54,13 @@
           dest=/etc/nginx/sites-enabled/libreborme
           state=link
 
+  - name: Create script.sh for cron
+    template: src=templates/cron_fetch_borme.sh.j2 dest={{ libreborme_dir }}/script.sh
+
+  - name: Activate cron
+    cron: name="Fetch new BORMEs" minute=0 hour=8 weekday="1-5"
+    become_user: libreborme
+
   handlers:
     - name: restart nginx
       service: name=nginx state=restarted

@@ -1,0 +1,6 @@
+#!/bin/sh
+# crontab -e
+# 0 8     * * 1-5         /var/www/libreborme/script.sh
+
+. ~/.virtualenvs/libreborme/bin/activate
+cd /var/www/libreborme && ./manage.py importbormetoday

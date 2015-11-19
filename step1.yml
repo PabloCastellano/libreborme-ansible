@@ -30,7 +30,6 @@
       - openssl
       - supervisor
       - checkinstall
-      - virtualenv
       - wget
       - git
       - postfix
@@ -39,6 +38,7 @@
       - postgresql-contrib
       - python-psycopg2
       - openjdk-7-jre
+#      - virtualenv
 
   # La version de los repositorios es muy antigua
   - name: Download elasticsearch
