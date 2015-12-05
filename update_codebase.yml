@@ -5,6 +5,8 @@
     lb_home: /home/libreborme/libreborme/
     bp_home: /home/libreborme/bormeparser/
     venv_home: /home/libreborme/.virtualenvs/libreborme/
+    www_dir: /var/www
+    libreborme_dir: "{{ www_dir }}/libreborme"
     branch: develop
 
   tasks:
@@ -30,6 +32,11 @@
     become_user: libreborme
 
   # TODO: migrations?
+
+  - name: Running django collectstatic
+    django_manage: command="collectstatic --noinput" virtualenv={{ venv_home }} app_path={{ libreborme_dir }}
+    become: True
+    become_user: libreborme
 
   # BUG: https://github.com/ansible/ansible/issues/3977
   #- name: restart supervisor
