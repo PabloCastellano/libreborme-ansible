@@ -62,7 +62,7 @@
     become: True
 
   - name: Setup a virtual environment using Python 3
-    shell: pyvenv {{ venv_home }}
+    shell: pyvenv {{ venv_home }} creates={{ venv_home }}
 
   - name: install libreborme and dependencies
     pip: name={{ item }} virtualenv={{ venv_home }} state=latest
