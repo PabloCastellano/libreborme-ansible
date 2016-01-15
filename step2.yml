@@ -52,6 +52,13 @@
     postgresql_ext: name=hstore db=libreborme
     become_user: postgres
 
+  - name: Allow connections to database from 192.168.33.1/24
+    lineinfile: 
+      dest=/etc/postgresql/9.4/main/pg_hba.conf
+      regexp="^host\s+all\s+all\s+192.168.33.1"
+      line="host    all             all             192.168.33.1/24         trust"
+    notify: restart postgresql
+
   - name: Running django migrate
     django_manage: command="migrate --no-initial-data" virtualenv={{ venv_home }} app_path={{ libreborme_dir }}
 
@@ -67,3 +74,6 @@
   - name: Configuring bashrc II
     lineinfile: dest=/home/vagrant/.bashrc line="cd {{ libreborme_dir }}"
 
+  handlers:
+    - name: restart postgresql
+      service: name=postgresql state=restarted
