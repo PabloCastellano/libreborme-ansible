@@ -37,6 +37,9 @@
   - name: Enabling DEBUG mode
     lineinfile: dest={{ libreborme_dir }}/{{ project_name }}/settings.py regexp="^DEBUG" line="DEBUG = True"
 
+  - name: Configuring Django INTERNAL_IPS
+    lineinfile: dest={{ libreborme_dir }}/{{ project_name }}/settings.py regexp="^INTERNAL_IPS" line="INTERNAL_IPS = ('192.168.33.1',)"
+
   - name: Create database
     postgresql_db: name=libreborme
     become_user: postgres
@@ -63,3 +66,4 @@
 
   - name: Configuring bashrc II
     lineinfile: dest=/home/vagrant/.bashrc line="cd {{ libreborme_dir }}"
+
