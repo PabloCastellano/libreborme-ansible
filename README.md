@@ -1,3 +1,7 @@
+**NOTA: Este proyecto no está mantenido y puede que no funcione.**
+
+Puedes echarle un ojo a las instrucciones para la instalación manual de libreborme en http://libreborme.readthedocs.org/es/latest/installation/.
+
 # Libreborme-ansible
 
 Script para el despliegue automático de Libreborme.
