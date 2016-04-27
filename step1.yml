@@ -35,6 +35,7 @@
       - wget
       - git
       - postfix
+      - libpq-dev
 
   - name: Generate es_ES.UTF-8 locale
     locale_gen: name=es_ES.UTF-8 state=present
